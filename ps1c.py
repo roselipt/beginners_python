@@ -1,5 +1,10 @@
 #  Problem Set 1b, MIT Open Course 6.0001 from 2016
 
+#  (1c)  Asks for a bisection search to find the savings rate necessary to achieve a particular
+#  goal: a down payment of 0.25 of $1M in 3 years,
+#  assuming 150000 salary and 0.07 semi-annual raise.
+#  Also count the number of steps. 
+
 #  (1b)  Adds a semiannual raise to be asked for as input as decimal and awarded every six months.
 
 #  (1a)  Get user input for annual salary, a fraction to save monthly and total cost of dream house.
@@ -19,10 +24,10 @@
 #total_cost = float(500000)
 #semi_annual_raise = float(.03)
 
-annual_salary = float(80000)
-portion_saved = float(.1)
-total_cost = float(800000)
-semi_annual_raise = float(.03)
+annual_salary = float(150000)
+portion_saved = float(.25)
+total_cost = float(1000000)
+semi_annual_raise = float(.07)
 
 month = 0
 current_savings = 0.0
