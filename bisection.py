@@ -26,8 +26,5 @@ while not found :
     guess = int(lower_bound + ((upper_bound - lower_bound)/2))
     
 print("Guess-mo has done it again, guessing", guess, "in", attempt, "steps!")    
-        
-#        found = (input("You want me to change found?") == "y")
-    
 print("And that is show business.")
 

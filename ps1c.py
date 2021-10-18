@@ -1,4 +1,4 @@
-#  Problem Set 1b, MIT Open Course 6.0001 from 2016
+#  Problem Set 1c, MIT Open Course 6.0001 from 2016
 
 #  (1c)  Asks for a bisection search to find the savings rate necessary to achieve a particular
 #  goal: a down payment of 0.25 of $1M in 3 years,
@@ -48,12 +48,51 @@ while current_savings < down_payment :
         annual_salary *= (1 + semi_annual_raise)
         monthly_savings *= (1 + semi_annual_raise)
         after_raise = "{} raise to {:.2f}"
-        print(after_raise.format(month, annual_salary))
+        #print(after_raise.format(month, annual_salary))
 
-print("Months:", month)
+print("Months:", month, "at savings rate of", portion_saved)
 #print("Saving", monthly_savings, " per month, you will be able to buy your house in", month, "months.")
 
-#  This code produces the correct answer to two test cases
-#  120000, 0.1, 1000000 -> 183
-#  80000, 0.15, 500000 -> 105
-#  A hidden lesson in the additive value of thrift.
+#  For the bisection search, the assignment suggests rethinking portion_saved as an integer
+p_s_int = 25
+lower_bound = 0
+upper_bound = 10000
+portion_saved = p_s_int/upper_bound
+print("Portion saved is", portion_saved)
+
+
+#  This is the "close enough" amount to stop the search
+epsilon = 100
+found = False
+#  Rest starting balance and salary; 
+current_savings = 0
+monthly_savings = annual_salary*portion_saved/12
+
+#
+while not found :
+    #  Calculate savings after 3 years at given rate
+    for i in range(36) :
+        interest = current_savings*r/12
+        current_savings += interest
+        current_savings += monthly_savings
+        #  Every 6 months recalculate salary
+        if i % 6 == 0 :
+            annual_salary *= (1 + semi_annual_raise)
+            monthly_savings = annual_salary*portion_saved/12
+    #  After for loop current_savings is after 36 months
+    if down_payment - current_savings < epsilon :
+        found = True
+        print("{:.2f} after 3 years at {:.6f}".format(current_savings, portion_saved))
+    else :
+        #  Bisection search here
+        #  Calculate next guess for portion_saved
+        if current_savings < portion_down_payment :
+            p_s_int += (upper_bound - p_s_int)/2
+            portion_saved /= upper_bound
+        else :
+            p_s_int /= 2
+            portion_saved /= upper_bound
+        
+print("The rate that works in 36 months is", portion_saved)
+
+
