@@ -68,31 +68,40 @@ found = False
 current_savings = 0
 monthly_savings = annual_salary*portion_saved/12
 
+again = True
 #
-while not found :
+while (not found) and (again) :
+    current_savings = 0
+    #monthly_savings = annual_salary*portion_saved/12
     #  Calculate savings after 3 years at given rate
     for i in range(36) :
         interest = current_savings*r/12
         current_savings += interest
         current_savings += monthly_savings
         #  Every 6 months recalculate salary
-        if i % 6 == 0 :
+        if (i % 6 == 0) and (i != 0) :
             annual_salary *= (1 + semi_annual_raise)
             monthly_savings = annual_salary*portion_saved/12
     #  After for loop current_savings is after 36 months
-    if down_payment - current_savings < epsilon :
+    print("Testing for rate {:.6f}".format(portion_saved))
+    if abs(down_payment - current_savings) < epsilon :
         found = True
         print("{:.2f} after 3 years at {:.6f}".format(current_savings, portion_saved))
     else :
         #  Bisection search here
         #  Calculate next guess for portion_saved
-        if current_savings < portion_down_payment :
-            p_s_int += (upper_bound - p_s_int)/2
-            portion_saved /= upper_bound
+        if current_savings < down_payment :
+            lower_bound = p_s_int
+            
         else :
-            p_s_int /= 2
-            portion_saved /= upper_bound
-        
-print("The rate that works in 36 months is", portion_saved)
+            upper_bound = p_s_int
+        p_s_int = int(lower_bound + (upper_bound-lower_bound)/2)
+        portion_saved = p_s_int/10000
+
+    print("{:.6f} yields {:.2f}".format(portion_saved, current_savings))
+    arg = input(" Would you like to see the next guess?")
+    if arg != 'y' :
+        again = False
+print("The rate that works in 36 months is {:.4f}".format(portion_saved))
 
 
