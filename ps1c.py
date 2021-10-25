@@ -86,25 +86,26 @@ while (not found) and (again) :
             annual_salary *= (1 + semi_annual_raise)
             monthly_savings = annual_salary*portion_saved/12
             #  Debugging message
-            print(i, "month raise to", annual_salary, "!")
+            #print(i, "month raise to", annual_salary, "!")
 
     #  After for loop current_savings is after 36 months
-    print("Testing for rate {:.6f}".format(portion_saved))
+    print("Testing for rate {:.4f}".format(portion_saved))
     print("{:.6f} yields {:.2f} at 3 years.".format(portion_saved, current_savings))
+    print("", )
     if abs(down_payment - current_savings) < epsilon :
         found = True
         print(" {:.2f} after 3 years at {:.6f}".format(current_savings, portion_saved))
+    #  Calculate next guess for portion_saved accoring to bisection search
+    elif current_savings < down_payment :
+        lower_bound = p_s_int
+        print("Savings too low!")    
     else :
-        #  Calculate next guess for portion_saved accoring to bisection search
-        if current_savings < down_payment :
-            upper_bound = p_s_int
-            
-        else :
-            lower_bound = p_s_int
-        p_s_int = int(lower_bound + (upper_bound-lower_bound)/2)
-        portion_saved = p_s_int/10000
-
-    arg = input("   Would you like to see the next guess? ")
+        upper_bound = p_s_int
+        print("Savings too high!")
+    p_s_int = int(lower_bound + (upper_bound-lower_bound)/2)
+    portion_saved = p_s_int/10000
+    print("   Next guess will be {:.4f}".format(portion_saved))
+    arg = input("    Would you like to see the next guess? ")
     if arg != 'y' :
         again = False
 
