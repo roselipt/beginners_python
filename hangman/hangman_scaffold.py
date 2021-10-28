@@ -61,13 +61,7 @@ def is_word_guessed(secret_word, letters_guessed):
       False otherwise
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    done = True
-    for letter in secret_word :
-      if letter not in letters_guessed :
-        done = False
-        break
-    return done
-    #pass
+    pass
 
 
 
@@ -79,14 +73,7 @@ def get_guessed_word(secret_word, letters_guessed):
       which letters in secret_word have been guessed so far.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    guessed_word = ""
-    space = "_ "
-
-    for letter in secret_word :
-      if letter in letters_guessed :
-        guessed_word += letter
-    return guessed_word
-    #pass
+    pass
 
 
 
@@ -97,13 +84,7 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    alphabet = string.ascii_lowercase
-    available = ""
-    for letter in alphabet :
-      if letter not in letters_guessed :
-        available += letter
-    return available
-    #pass
+    pass
     
     
 
@@ -223,7 +204,6 @@ if __name__ == "__main__":
     secret_word = choose_word(wordlist)
     hangman(secret_word)
 
-print(secret_word)
 ###############
     
     # To test part 3 re-comment out the above lines and 
