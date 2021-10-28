@@ -136,7 +136,32 @@ def hangman(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    print("Secret word is", secret_word)
+    secret_word = 'apple'
+    print(" But really now it's", secret_word)
+    print("The secret word is", len(secret_word), "long.")
+    guessed = []
+    guesses = 6
+    while guesses != 0 :
+      #  Show guesses left
+      if guesses > 1 :
+        print(" You have", guesses, " guesses left.")
+      else :
+        print(" Just", guesses, "guess left. Better make it count!")
+      print("  Letters still available are", get_available_letters(guessed))
+      guess = input(" Guess! One lower case letter only, please! ")
+      print(" You guessed", guess, "!")
+      #  Is letter guessed in the word
+      if guess in secret_word :
+        print(" Sweet guess!", guess, "is totally in the word!")
+      else :
+        print(" Bummer!", guess, "isn't in there.")
+      guessed += guess
+      #  Check if word is guessed
+
+      print("  Guessed-word is", get_guessed_word(secret_word, guessed))
+      guesses -= 1
+    #pass
 
 
 
@@ -226,13 +251,14 @@ if __name__ == "__main__":
     secret_word = choose_word(wordlist)
     hangman(secret_word)
 
-print(secret_word)
-secret_word = 'apple'
-guessed = ['p']
-print("Now secret word is changed to", secret_word)
-print(" And guessed is", guessed)
-print("  Get_guessed_word for", guessed, "is:", get_guessed_word(secret_word, guessed))
-print("Is_guessed for", guessed, "is", is_word_guessed(secret_word, guessed))
+# print(secret_word)
+# secret_word = 'apple'
+# guessed = ['p']
+# print("Now secret word is changed to", secret_word)
+# print(" And guessed is", guessed)
+# print("  Get_guessed_word for", guessed, "is:", get_guessed_word(secret_word, guessed))
+# print("   Is_guessed for", guessed, "is", is_word_guessed(secret_word, guessed))
+# print("    O and available letters is", get_available_letters(guessed))
 
 ###############
     
