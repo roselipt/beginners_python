@@ -85,6 +85,9 @@ def get_guessed_word(secret_word, letters_guessed):
     for letter in secret_word :
       if letter in letters_guessed :
         guessed_word += letter
+        guessed_word += " "
+      else :
+        guessed_word += space
     return guessed_word
     #pass
 
@@ -224,6 +227,13 @@ if __name__ == "__main__":
     hangman(secret_word)
 
 print(secret_word)
+secret_word = 'apple'
+guessed = ['p']
+print("Now secret word is changed to", secret_word)
+print(" And guessed is", guessed)
+print("  Get_guessed_word for", guessed, "is:", get_guessed_word(secret_word, guessed))
+print("Is_guessed for", guessed, "is", is_word_guessed(secret_word, guessed))
+
 ###############
     
     # To test part 3 re-comment out the above lines and 
