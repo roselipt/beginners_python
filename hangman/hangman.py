@@ -139,30 +139,76 @@ def hangman(secret_word):
     print("Secret word is", secret_word)
     secret_word = 'apple'
     print(" But really now it's", secret_word)
+    
+    print("Let's play a game of Hangman!")
     print("The secret word is", len(secret_word), "long.")
+    
+    #  While guesses remain: get guess and show result
     guessed = []
     guesses = 6
+    warnings = 3
+    win = False
+    vowels = ['a', 'e', 'i', 'o', 'u']
     while guesses != 0 :
-      #  Show guesses left
+      #  Show number of guesses left
       if guesses > 1 :
-        print(" You have", guesses, " guesses left.")
+        print("You have", guesses, " guesses left.")
+        print("  &", warnings, " warnings.")
       else :
-        print(" Just", guesses, "guess left. Better make it count!")
-      print("  Letters still available are", get_available_letters(guessed))
+        print("Just", guesses, "guess left. Better make it count!")
+      #  Show letters available to guess
+      print("Letters still available are", get_available_letters(guessed))
+      #  Get guess from player
       guess = input(" Guess! One lower case letter only, please! ")
-      print(" You guessed", guess, "!")
-      #  Is letter guessed in the word
-      if guess in secret_word :
-        print(" Sweet guess!", guess, "is totally in the word!")
+      print("\n")
+      #  If input is letter, apply game rules.
+      if str.isalpha(guess) : 
+        guess = str.lower(guess)
+        #  Check if input is new (not guessed yet).
+        if guess not in guessed :
+          guessed += guess
+          #  Check if guess is in word.
+          if guess in secret_word :
+            print(" Sweet guess!", end="")
+          #  Need to add code here for vowels
+          else :
+            print(" Bummer!", guess, "isn't in there.", end="")
+            guesses -= 1
+      
+        #  If guess is a repeat and warnings remain, take one away
+        elif warnings > 0 :
+          print(guess, "has already been guessed! That will cost you a warning!", end="")
+          warnings -= 1
+        #  Else guess is repeat, no warnings remain, and it costs a guess.
+        else :
+          print(guess, "has already been guessed and you are out of warnings. That costs a guess.", end="")
+          guesses -= 1
+      
+      #  Input is not letter and warnings remain.
+      elif warnings > 0 :
+        warnings -= 1
+        print(guess, " isn't a letter!", warnings, "left.", end="")
+      
+      #  Input is not letter and warnings are used up. That costs a guess.
       else :
-        print(" Bummer!", guess, "isn't in there.")
-      guessed += guess
-      #  Check if word is guessed
+        print(guess, " isn't a letter!", end="")
+        guesses -= 1
 
-      print("  Guessed-word is", get_guessed_word(secret_word, guessed))
-      guesses -= 1
-    #pass
+      #  Show guess. This appears at the end of every turn.  
+      print("  ", get_guessed_word(secret_word, guessed))
 
+      #  Is the whole word guessed? Break or print line to mark end of turn.
+      if is_word_guessed(secret_word, guessed) :
+        win = True
+        print("YOU WIN!!!")
+        break
+      else :
+        print("\n  --------\n")
+
+
+    if win : print("WINNER! WINNER! WINNER!")
+    else : print(" You've run out of turns! Better luck next time!")
+    
 
 
 # When you've completed your hangman function, scroll down to the bottom
