@@ -108,7 +108,26 @@ def get_available_letters(letters_guessed):
     return available
     #pass
     
-    
+def unique_letters(secret_word):
+  """
+  secret_word: string, the secret word the user is guessing
+  return: int, number of unique letters in secret word
+  """
+  unique_letters = []
+  for i in secret_word :
+    if i not in unique_letters :
+      unique_letters += i
+  print("  ... just for buggin man:", unique_letters)
+  return len(unique_letters)
+  
+def score_word(secret_word, guesses) :
+  """
+  secret_word: string, the secret word the user is guessing
+  guesses: int, number of guesses remaining after word is completely guessed
+  return: int, score for game 
+  """
+  pass
+
 
 def hangman(secret_word):
     '''
@@ -152,18 +171,21 @@ def hangman(secret_word):
       #  Show number of guesses left
       if guesses > 1 :
         print("You have", guesses, " guesses left.")
-        #  Moved this
-        #  Sample output from spec shows this output only when a warning is lost.
-        #print("  &", warnings, " warnings.")
       else :
-        print("Just", guesses, "guess left. Better make it count!")
+        print("Just", guesses, "guess left!")
       #  Show letters available to guess
       print("Letters still available are", get_available_letters(guessed))
       #  Get guess from player
       guess = input(" Guess! One lower case letter only, please! ")
       print("\n")
+      #    MAYBE need a check here for SINGLE letter only.
+
       #  Check if input is letter, apply game rules.
-      if str.isalpha(guess) : 
+      #  (Aside for later: I discovered some odd behavior when user entered two letters.
+      #   Like 'ab' entered by accident would become 'a' and 'b' in list of guesses.
+      #   Len == 1 solves the problem. But I still don't totally understand:
+      #   Why += 'ab' adds and the two separately and not together as list.append('ab') does.)
+      if str.isalpha(guess) and len(guess) == 1 : 
         guess = str.lower(guess)
         #  Check if input is new (hasn't been guessed yet).
         if guess not in guessed :
@@ -171,10 +193,14 @@ def hangman(secret_word):
           #  Check if guess is in word.
           if guess in secret_word :
             print(" Sweet guess!", end="")
-          #  Need to add code here for vowels
           else :
-            print(" Bummer!", guess, "isn't in there.", end="")
-            guesses -= 1
+            print(" Bummer!", guess, "isn't in there.", end='')
+            #  Try ternary here later
+            if guess in vowels :
+              print("2 for a vowel too!", end = '')
+              guesses -= 2 
+            else :
+              guesses -= 1
       
         #  If guess is a repeat and warnings remain, take one away
         elif warnings > 0 :
@@ -188,15 +214,15 @@ def hangman(secret_word):
       #  Input is not letter and warnings remain.
       elif warnings > 0 :
         warnings -= 1
-        print("Oops! That is not a valid letter! You have", warnings, "left.", end="")
+        print("Oops! That is not a valid letter! You have", warnings, "warnings left.", end="")
       
       #  Input is not letter and warnings are used up. That costs a guess.
       else :
-        print(guess, " isn't a letter!", end="")
+        print("Oops! That isn't a letter!", end="")
         guesses -= 1
 
       #  Show guess at the end of every turn.
-      #  This appears at the end of every line from the above if tree.  
+      #  This appears at the end of every line from the if ladder above.  
       print("  ", get_guessed_word(secret_word, guessed))
 
       #  Is the whole word guessed? 
@@ -210,14 +236,17 @@ def hangman(secret_word):
 
     # End of while loop for turns
 
-    if win : print("WINNER! WINNER! WINNER!")
+    if win : 
+      print("Congratulations, you won!")
+      score = guesses * unique_letters(secret_word)
+      print("Your total score for this game is:", score)
     else : print(" You've run out of turns! Better luck next time!")
     
 
 
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
-#(hint: you might want to pick your own
+# (hint: you might want to pick your own
 # secret_word while you're doing your own testing)
 
 
