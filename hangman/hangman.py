@@ -33,7 +33,6 @@ def load_words():
     return wordlist
 
 
-
 def choose_word(wordlist):
     """
     wordlist (list): list of words (strings)
@@ -106,7 +105,6 @@ def get_available_letters(letters_guessed):
       if letter not in letters_guessed :
         available += letter
     return available
-    #pass
     
 def unique_letters(secret_word):
   """
@@ -194,31 +192,32 @@ def hangman(secret_word):
           if guess in secret_word :
             print(" Sweet guess!", end="")
           else :
-            print(" Bummer!", guess, "isn't in there.", end='')
+            print("Oops! That letter is not in my word.", end='')
             #  Try ternary here later
             if guess in vowels :
-              print("2 for a vowel too!", end = '')
+              print(" 2 for a vowel too!", end = '')
               guesses -= 2 
             else :
               guesses -= 1
       
-        #  If guess is a repeat and warnings remain, take one away
+        #  If guess is a repeat and warnings remain, take one warning away.
         elif warnings > 0 :
-          print(guess, "has already been guessed! That will cost you a warning!", end="")
+          print(guess, "Oops! You already guessed that letter.", end='')
           warnings -= 1
-        #  Else guess is repeat, no warnings remain, and it costs a guess.
+          print(" You have", warnings, "warnings left.", end= '')
+        #  Else guess is repeat, no warnings remain, and take one guess away.
         else :
-          print(guess, "has already been guessed and you are out of warnings. That costs a guess.", end="")
+          print("You've already guessed that letter. You have no warnings left so that costs a guess.", end='')
           guesses -= 1
       
       #  Input is not letter and warnings remain.
       elif warnings > 0 :
         warnings -= 1
-        print("Oops! That is not a valid letter! You have", warnings, "warnings left.", end="")
+        print("Oops! That is not a letter. You have", warnings, "warnings left.", end="")
       
       #  Input is not letter and warnings are used up. That costs a guess.
       else :
-        print("Oops! That isn't a letter!", end="")
+        print("Oops! That is not a letter! You have no warnings left so that costs a guess", end="")
         guesses -= 1
 
       #  Show guess at the end of every turn.
@@ -264,8 +263,31 @@ def match_with_gaps(my_word, other_word):
         False otherwise: 
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    
+    #  Strip spaces from my_word and convert to list
+    my_word = [letter for letter in my_word if letter != ' ']          
 
+    #  If lengths match proceed with check, else no match
+    if len(my_word) == len(other_word) :
+      #  Convert other_word to list    
+      other_word = list(other_word)      
+      #  Place blanks in other_word according to my_word
+      for position in range(0, len(my_word)) :
+        if my_word[position] == '_' :
+          other_word[position] = '_'
+      #  Compare the lists
+      # print('From method our lists are:')
+      # print(my_word)
+      # print(other_word)
+      return my_word == other_word
+    
+    else :  #  (Word lengths did not match.)
+      return False
+
+    #  The assignment gives a hint to use strip() which doesn't seem necessary to me
+    #  and so makes me wonder if I'm missing something?
+    # my_word = strip(my_word)
+    
 
 
 def show_possible_matches(my_word):
@@ -279,8 +301,10 @@ def show_possible_matches(my_word):
 
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
+    for word in wordlist :
+      if match_with_gaps(my_word, word) :
+        print(word, end = " ")
+    print()
 
 
 def hangman_with_hints(secret_word):
@@ -331,10 +355,15 @@ if __name__ == "__main__":
 
     print("Secret word is", secret_word)
     #  Set secret word for debugging.
-    secret_word = 'jetta'
+    secret_word = 'apple'
     print(" But really now it's", secret_word)
 
-    hangman(secret_word)
+    #hangman(secret_word)
+    blanky = "a _ _ l e"
+    print("Blanky word is", blanky, " and match with gaps is", match_with_gaps(blanky, secret_word))
+    print()
+    print('And matching words are:')
+    show_possible_matches(blanky)
 
 # print(secret_word)
 # secret_word = 'apple'
