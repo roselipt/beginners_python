@@ -175,14 +175,13 @@ def hangman(secret_word):
       print("Letters still available are", get_available_letters(guessed))
       #  Get guess from player
       guess = input(" Guess! One lower case letter only, please! ")
-      print("\n")
-      #    MAYBE need a check here for SINGLE letter only.
+      print()
 
-      #  Check if input is letter, apply game rules.
+      #  Check if input is (single) letter, apply game rules.
       #  (Aside for later: I discovered some odd behavior when user entered two letters.
       #   Like 'ab' entered by accident would become 'a' and 'b' in list of guesses.
       #   Len == 1 solves the problem. But I still don't totally understand:
-      #   Why += 'ab' adds and the two separately and not together as list.append('ab') does.)
+      #   Why += 'ab' adds the two separately and not together as list.append('ab') does.)
       if str.isalpha(guess) and len(guess) == 1 : 
         guess = str.lower(guess)
         #  Check if input is new (hasn't been guessed yet).
@@ -193,9 +192,9 @@ def hangman(secret_word):
             print(" Sweet guess!", end="")
           else :
             print("Oops! That letter is not in my word.", end='')
-            #  Try ternary here later
+            #  Try ternary here later?
             if guess in vowels :
-              print(" 2 for a vowel too!", end = '')
+              print(" A wrong vowel costs 2 guesses!", end = '')
               guesses -= 2 
             else :
               guesses -= 1
@@ -205,7 +204,7 @@ def hangman(secret_word):
           print(guess, "Oops! You already guessed that letter.", end='')
           warnings -= 1
           print(" You have", warnings, "warnings left.", end= '')
-        #  Else guess is repeat, no warnings remain, and take one guess away.
+        #  Else guess is repeat, no warnings remain, take one guess away.
         else :
           print("You've already guessed that letter. You have no warnings left so that costs a guess.", end='')
           guesses -= 1
@@ -215,7 +214,7 @@ def hangman(secret_word):
         warnings -= 1
         print("Oops! That is not a letter. You have", warnings, "warnings left.", end="")
       
-      #  Input is not letter and warnings are used up. That costs a guess.
+      #  Input is not letter and no warnings remain. That costs a guess.
       else :
         print("Oops! That is not a letter! You have no warnings left so that costs a guess", end="")
         guesses -= 1
@@ -335,7 +334,93 @@ def hangman_with_hints(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
+    print("Let's play a game of Hangman!")
+    print("I'm thinking of a word that is", len(secret_word), "long.")
+    
+    #  While guesses remain: get guess and show result
+    guessed = []
+    guesses = 6
+    warnings = 3
+    win = False
+    score = 0
+    vowels = ['a', 'e', 'i', 'o', 'u']  #  Needed to keep score
+    
+    while guesses != 0 :
+      #  Show number of guesses left
+      if guesses > 1 :
+        print("You have", guesses, " guesses left.")
+      else :
+        print("Just", guesses, "guess left!")
+      #  Show letters available to guess
+      print("Letters still available are", get_available_letters(guessed))
+      #  Get guess from player
+      guess = input(" Guess! One lower case letter only, please! ")
+      print()
+
+      #  Check if input is (single) letter, apply game rules.
+      #  (Aside for later: I discovered some odd behavior when user entered two letters.
+      #   Like 'ab' entered by accident would become 'a' and 'b' in list of guesses.
+      #   Len == 1 solves the problem. But I still don't totally understand:
+      #   Why += 'ab' adds the two separately and not together as list.append('ab') does.)
+      if str.isalpha(guess) and len(guess) == 1 : 
+        guess = str.lower(guess)
+        #  Check if input is new (hasn't been guessed yet).
+        if guess not in guessed :
+          guessed += guess
+          #  Check if guess is in word.
+          if guess in secret_word :
+            print(" Sweet guess!", end="")
+          else :
+            print("Oops! That letter is not in my word.", end='')
+            #  Try ternary here later?
+            if guess in vowels :
+              print(" A wrong vowel costs 2 guesses!", end = '')
+              guesses -= 2 
+            else :
+              guesses -= 1
+        #  If guess is a repeat and warnings remain, take one warning away.
+        elif warnings > 0 :
+          print(guess, "Oops! You already guessed that letter.", end='')
+          warnings -= 1
+          print(" You have", warnings, "warnings left.", end= '')
+        #  Else guess is repeat, no warnings remain, take one guess away.
+        else :
+          print("You've already guessed that letter. You have no warnings left so that costs a guess.", end='')
+          guesses -= 1
+      #  If guess is secret symbol '*' for hints      
+      elif guess == '*' :
+        show_possible_matches(secret_word)
+
+      #  Input is not letter and warnings remain.
+      elif warnings > 0 :
+        warnings -= 1
+        print("Oops! That is not a letter. You have", warnings, "warnings left.", end="")
+      
+      #  Input is not letter and no warnings remain. That costs a guess.
+      else :
+        print("Oops! That is not a letter! You have no warnings left so that costs a guess", end="")
+        guesses -= 1
+
+      #  Show guess at the end of every turn.
+      #  This appears at the end of every line from the if ladder above.  
+      print("  ", get_guessed_word(secret_word, guessed))
+
+      #  Is the whole word guessed? 
+      #  Break or print line to mark end of turn.
+      if is_word_guessed(secret_word, guessed) :
+        win = True
+        print("YOU WIN!!!")
+        break
+      else :
+        print("\n  --------\n")
+
+    # End of while loop for turns
+
+    if win : 
+      print("Congratulations, you won!")
+      score = guesses * unique_letters(secret_word)
+      print("Your total score for this game is:", score)
+    else : print(" You've run out of turns! Better luck next time!")
 
 
 
@@ -351,19 +436,21 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
     
-    secret_word = choose_word(wordlist)
+    # secret_word = choose_word(wordlist)
 
-    print("Secret word is", secret_word)
+    # print("Secret word is", secret_word)
     #  Set secret word for debugging.
-    secret_word = 'apple'
-    print(" But really now it's", secret_word)
+    # secret_word = 'apple'
+    # print(" But really now it's", secret_word)
 
-    #hangman(secret_word)
-    blanky = "a _ _ l e"
-    print("Blanky word is", blanky, " and match with gaps is", match_with_gaps(blanky, secret_word))
-    print()
-    print('And matching words are:')
-    show_possible_matches(blanky)
+    # hangman(secret_word)
+    
+    # #  Debugging code for finding matches
+    # blanky = "a _ _ l e"
+    # print("Blanky word is", blanky, " and match with gaps is", match_with_gaps(blanky, secret_word))
+    # print()
+    # print('And matching words are:')
+    # show_possible_matches(blanky)
 
 # print(secret_word)
 # secret_word = 'apple'
@@ -379,5 +466,5 @@ if __name__ == "__main__":
     # To test part 3 re-comment out the above lines and 
     # uncomment the following two lines. 
     
-    #secret_word = choose_word(wordlist)
-    #hangman_with_hints(secret_word)
+    secret_word = choose_word(wordlist)
+    hangman_with_hints(secret_word)
