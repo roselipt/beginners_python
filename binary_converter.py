@@ -13,7 +13,7 @@ for decimal in l :
             binary += [1]
             decimal -= 2 ** power
         else :
-            binary += [0]
+            binary += [0] if (binary or power ==0) else []
         power -= 1
     print(binary)
 
