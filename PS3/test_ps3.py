@@ -183,6 +183,16 @@ def test_is_valid_word(word_list):
         
         failure = True        
 
+    # test 7  ***Added by me per instruction to call a word again with same hand.
+    #           What should behavior be? the assignment asks. Same, I think.
+    word = "Even"
+
+    if  is_valid_word(word, hand, word_list):
+        print("FAILURE: test_is_valid_word()")
+        print("\tExpected False, but got True for word: '" + word + "' and hand:", hand)
+        print("\t(If this is the only failure, make sure is_valid_word() isn't mutating its inputs)")        
+        
+        failure = True        
     if not failure:
         print("SUCCESS: test_is_valid_word()")
 

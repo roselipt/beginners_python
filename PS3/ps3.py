@@ -224,7 +224,7 @@ def is_valid_word(word, hand, word_list):
         wild_words = []
         for vowel in VOWELS:
             wild_word = word[:pos] + vowel + word[pos+1:]
-            print(word, wild_word, wild_word in word_list)
+            #print(word, wild_word, wild_word in word_list)
             if wild_word in word_list:
                 wild_valid = True
                 break
