@@ -175,8 +175,30 @@ def update_hand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-
-    pass  # TO DO... Remove this line when you implement this function
+    word = word.lower()
+    freq_dict = get_frequency_dict(word)
+    new_hand = {}
+    #  Process word
+    #  For each letter in word, check against hand, adding any remaining letters to new_hand appropriately
+    for letter in freq_dict.keys():
+        difference = hand.get(letter, 0) - freq_dict.get(letter, 0)
+        #  If hand held more of the letter than needed for word, 
+        #  add the unused multiples of letter to new hand
+        if difference > 0:
+            new_hand[letter] = difference
+        #  Else do nothing
+        #  (Difference == 0 means all used so no tiles to add to new_hand)
+        #  (Difference < 0 means attempt to use letters not in hand, no tiles to add to new_hand) 
+        
+    #  Process rest of hand
+    #  For each letter not in word, add to new_hand
+    print(hand.keys(), 'and', word)
+    for letter in hand.keys():
+        print(letter, 'not in hand', letter not in word )
+        if letter not in word:
+            new_hand[letter] = hand[letter]
+    return new_hand
+    #pass  # TO DO... Remove this line when you implement this function
 
 #
 # Problem #3: Test word validity
