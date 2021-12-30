@@ -16,7 +16,7 @@ CONSONANTS = 'bcdfghjklmnpqrstvwxyz'
 HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
-    'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+    '*' : 0, 'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1, 'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
 }
 
 # -----------------------------------
@@ -144,7 +144,9 @@ def deal_hand(n):
     hand={}
     num_vowels = int(math.ceil(n / 3))
 
-    for i in range(num_vowels):
+    # Deal wildcard first for all hands
+    hand[0] = '*'
+    for i in range(1, num_vowels):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
     
@@ -192,9 +194,9 @@ def update_hand(hand, word):
         
     #  Process rest of hand
     #  For each letter not in word, add to new_hand
-    print(hand.keys(), 'and', word)
+    #print(hand.keys(), 'and', word)
     for letter in hand.keys():
-        print(letter, 'not in hand', letter not in word )
+        #print(letter, 'not in hand', letter not in word )
         if letter not in word:
             new_hand[letter] = hand[letter]
     return new_hand
@@ -214,8 +216,32 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    word = word.lower()
+    wild_valid = False
+    #  Check for wildcard, test if word is in in word_list
+    if '*' in word:
+        pos = word.find('*')
+        wild_words = []
+        for vowel in VOWELS:
+            wild_word = word[:pos] + vowel + word[pos+1:]
+            print(word, wild_word, wild_word in word_list)
+            if wild_word in word_list:
+                wild_valid = True
+                break
+        if not wild_valid:
+            return False
 
-    pass  # TO DO... Remove this line when you implement this function
+    # No wildcard: test if word is not in word_list
+    elif word not in word_list:
+        return False
+    
+    # Word is legal, check if player had the tiles (or letters in hand) to play it.
+    word_freq = get_frequency_dict(word)
+    for letter in word_freq:
+            if word_freq[letter] > hand.get(letter, 0):
+                return False
+    return True
+    #pass  # TO DO... Remove this line when you implement this function
 
 #
 # Problem #5: Playing a hand
