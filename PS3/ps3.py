@@ -398,6 +398,17 @@ def play_game(word_list):
     word_list: list of lowercase strings
     """
     
+    # Get number of hands
+
+    # Loop over number of hands
+
+        # Show hand and offer substitution
+	
+    	# Play hand
+
+    	# Replay Y/N? Which flows next to offer substituion or play hand?
+	
+
     print("play_game not implemented.") # TO DO... Remove this line when you implement this function
     
 
