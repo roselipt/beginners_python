@@ -145,7 +145,7 @@ def deal_hand(n):
     num_vowels = int(math.ceil(n / 3))
 
     # Deal wildcard first for all hands
-    hand[0] = '*'
+    hand['*'] = 1
     for i in range(1, num_vowels):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
@@ -397,19 +397,36 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+    total_score = 0
+    substitution_remains = True    
     
     # Get number of hands
-
+    while True:
+        num_hands = (input("Enter total number of hands: "))
+        if not num_hands.isdigit() or int(num_hands) > 6:
+            print('Choose a number from 1 to 6.')
+        else:
+            num_hands = int(num_hands)
+            break
     # Loop over number of hands
-
+    for _ in range(num_hands):
         # Show hand and offer substitution
-	
-    	# Play hand
+        hand = deal_hand(HAND_SIZE)
+        display_hand(hand)
+        sub_answer = input("Would you like to substitute a letter?")
+        print(sub_answer, "hmm? Well I'm afraid no substitution yet.")
+    	# Play hand, repeating until no
+        while True:
+            this_score = play_hand(hand, word_list)
+        	# Replay Y/N? back to play hand with no option for substitution
+            replay = input("Would you like to replay that hand?")
+            if replay == 'no':
+                break
+        total_score += this_score
 
-    	# Replay Y/N? Which flows next to offer substituion or play hand?
 	
 
-    print("play_game not implemented.") # TO DO... Remove this line when you implement this function
+    print('Total score is', total_score) # TO DO... Remove this line when you implement this function
     
 
 
