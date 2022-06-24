@@ -4,6 +4,7 @@
 # Collaborators:
 # Time:
 
+import readline
 from ps1_partition import get_partitions
 import time
 
@@ -25,7 +26,13 @@ def load_cows(filename):
     a dictionary of cow name (string), weight (int) pairs
     """
     # TODO: Your code here
-    pass
+    # Create dictionary
+    cows = {}
+    # Open file
+    f = open(filename, 'r')
+    #while s = f.readline()
+    print(f.readline())
+    f.close()
 
 # Problem 2
 def greedy_cow_transport(cows,limit=10):
@@ -94,3 +101,7 @@ def compare_cow_transport_algorithms():
     """
     # TODO: Your code here
     pass
+
+#main
+load_cows('ps1_cow_data.txt')
+print("And if my grandmother had wheels she'd be a wagon.")
